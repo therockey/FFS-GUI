@@ -7,7 +7,7 @@ def open_picker():
     color = picker.get()
 
 
-class Preferences(CTk):
+class Preferences(CTkToplevel):
     def __init__(self, master, change_color_theme):
         super().__init__()
 
