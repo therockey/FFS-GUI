@@ -1,7 +1,5 @@
 import enum
 
-from view.login import *
-
 
 class ViewType(enum.Enum):
     LOGIN = 1,
