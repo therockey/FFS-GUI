@@ -62,7 +62,9 @@ class App(CTk):
             case ViewType.MENU:
                 self.geometry("800x450")
                 self.main_content = Menu(self)
-                self.main_content.pack(expand=True, fill=BOTH)
+                self.main_content.grid(row=0, column=0, sticky="")
+                self.grid_rowconfigure(0, weight=1)
+                self.grid_columnconfigure(0, weight=1)
                 self.current_ui.append(self.main_content)
 
             case ViewType.UPLOAD:
