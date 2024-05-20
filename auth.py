@@ -3,7 +3,6 @@ from prefs import preferences
 
 
 def login(username: str, password: str) -> (bool, str):
-    print(username, password)
     response = requests.post(f"{preferences['API_URL']}/login/", data={"username": username, "password": password})
     return (True, "success") if response.status_code == 200 and response.json()['status'] == "success" else (
         False, response.json()['message'])
