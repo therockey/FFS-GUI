@@ -4,6 +4,7 @@ from view.menu import Menu
 from view.preferences import Preferences
 from view.about import About
 from view.register import Register
+from view.upload import Upload
 from viewlist import ViewType
 from prefs import preferences
 from SlickCTk.slick_context_menu import SlickContextMenu
@@ -66,8 +67,13 @@ class App(CTk):
                 self.grid_rowconfigure(0, weight=1)
                 self.grid_columnconfigure(0, weight=1)
                 self.current_ui.append(self.main_content)
-
             case ViewType.UPLOAD:
+                self.geometry("800x400")
+                self.main_content = Upload(self)
+                self.main_content.grid(row=0, column=0, sticky="")
+                self.grid_rowconfigure(0, weight=1)
+                self.grid_columnconfigure(0, weight=1)
+                self.current_ui.append(self.main_content)
                 pass
             case ViewType.FILE_LIST:
                 pass
