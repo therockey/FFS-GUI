@@ -3,6 +3,7 @@ from view.login import Login
 from view.menu import Menu
 from view.preferences import Preferences
 from view.about import About
+from view.register import Register
 from viewlist import ViewType
 from prefs import preferences
 from SlickCTk.slick_context_menu import SlickContextMenu
@@ -11,6 +12,8 @@ from SlickCTk.slick_context_menu import SlickContextMenu
 class App(CTk):
     def __init__(self):
         super().__init__()
+
+        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
 
         self.current_ui = []
 
@@ -45,6 +48,13 @@ class App(CTk):
             case ViewType.LOGIN:
                 self.geometry("450x450")
                 self.main_content = Login(self)
+                self.main_content.grid(row=0, column=0, sticky="")
+                self.grid_rowconfigure(0, weight=1)
+                self.grid_columnconfigure(0, weight=1)
+                self.current_ui.append(self.main_content)
+            case ViewType.REGISTER:
+                self.geometry("450x500")
+                self.main_content = Register(self)
                 self.main_content.grid(row=0, column=0, sticky="")
                 self.grid_rowconfigure(0, weight=1)
                 self.grid_columnconfigure(0, weight=1)
