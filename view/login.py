@@ -29,6 +29,7 @@ class Login(CTkFrame):
 
         # Create login button
         self.button_login = CTkButton(self, text="Login", command=self.login)
+        self.guest_login = CTkButton(self, text="Guest", command=lambda: self.guest)
 
         self.register_label = CTkLabel(self, text="Don't have an account? Register here", font=("Segoe", 10, "normal"))
 
@@ -42,6 +43,7 @@ class Login(CTkFrame):
         self.show_pass_check.pack(pady=5)
         self.register_label.pack(pady=5)
         self.button_login.pack(pady=10)
+        self.guest_login.pack(pady=0)
 
     def login(self):
         username = self.entry_username.get()
@@ -49,12 +51,18 @@ class Login(CTkFrame):
 
         response = auth.login(username, password)
         if response[0]:
+            self.master.logged_in = True
             self.master.changeView(ViewType.MENU)
         else:
             if self.error_window is None or not self.error_window.winfo_exists():
                 self.error_window = ErrorWindow(self, response[1])
             else:
                 self.error_window.focus()
+
+    def guest(self):
+        response = auth.get_token()
+        self.master.logged_in = False
+        self.master.changeView(ViewType.MENU)
 
     def on_key_press(self, event):
         if event.keysym == "Return":

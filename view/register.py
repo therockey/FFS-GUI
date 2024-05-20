@@ -13,21 +13,17 @@ class Register(CTkFrame):
         self.error_window = None
 
     def create_widgets(self):
-        # Create labels
-        self.label_username = CTkLabel(self, text="Username")
-        self.label_password = CTkLabel(self, text="Password", font=("Segoe", 12, "normal"))
-        self.label_password_repeat = CTkLabel(self, text="Repeat password", font=("Segoe", 12, "normal"))
 
         # Create username entry field
-        self.entry_username = CTkEntry(self)
+        self.entry_username = CTkEntry(self, placeholder_text="Username")
         self.entry_username.bind("<KeyRelease>", self.on_key_press)
 
         # Create password entry field
-        self.entry_password = CTkEntry(self, show="*")  # show "*" for password entry
+        self.entry_password = CTkEntry(self, show="*", placeholder_text="Password")  # show "*" for password entry
         self.entry_password.bind("<KeyRelease>", self.on_key_press)
 
         # Create password repeat entry field
-        self.entry_password_repeat = CTkEntry(self, show="*")  # show "*" for password entry
+        self.entry_password_repeat = CTkEntry(self, show="*", placeholder_text="Repeat password")  # show "*" for password entry
         self.entry_password_repeat.bind("<KeyRelease>", self.on_key_press)
 
         # Create show password checkbox
@@ -46,11 +42,8 @@ class Register(CTkFrame):
         self.label_password_mismatch.pack_forget()  # Initially hide the label
 
         # Vertical layout using pack
-        self.label_username.pack(pady=0)
-        self.entry_username.pack(pady=5)
-        self.label_password.pack(pady=0)
+        self.entry_username.pack(pady=15)
         self.entry_password.pack(pady=5)
-        self.label_password_repeat.pack(pady=0)
         self.entry_password_repeat.pack(pady=5)
         self.show_pass_check.pack(pady=5)
         self.login_label.pack(pady=5)
