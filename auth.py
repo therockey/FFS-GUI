@@ -17,7 +17,3 @@ def register(username: str, password: str) -> (bool, str):
 def get_token() -> str:
     response = requests.get(f"{preferences['API_URL']}/getcsrf/")
     return response.json()["csrf_token"] if response.status_code == 200 else None
-
-
-if __name__ == "__main__":
-    print(get_token())
