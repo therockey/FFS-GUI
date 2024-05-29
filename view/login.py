@@ -1,16 +1,15 @@
 from customtkinter import *
-import auth
 from viewlist import ViewType
 from prefs import preferences
-from view.error_window import ErrorWindow
 
 
 class Login(CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, login_func: callable, register_view_func: callable):
         super().__init__(master=master)
         self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.login_func = login_func
+        self.register_view_func = register_view_func
         self.create_widgets()
-        self.error_window = None
 
     def create_widgets(self):
         # Create labels
@@ -33,7 +32,7 @@ class Login(CTkFrame):
 
         self.register_label = CTkLabel(self, text="Don't have an account? Register here", font=("Segoe", 10, "normal"))
 
-        self.register_label.bind("<Button-1>", lambda e: self.master.changeView(ViewType.REGISTER))
+        self.register_label.bind("<Button-1>", self.register_view_func)
 
         # Vertical layout using pack
         self.label_username.pack(pady=0)
@@ -46,22 +45,9 @@ class Login(CTkFrame):
         self.guest_login.pack(pady=0)
 
     def login(self):
-        username = self.entry_username.get()
-        password = self.entry_password.get()
-
-        response = auth.login(username, password)
-        if response[0]:
-            self.master.logged_in = True
-            self.master.changeView(ViewType.MENU)
-        else:
-            if self.error_window is None or not self.error_window.winfo_exists():
-                self.error_window = ErrorWindow(self, response[1])
-            else:
-                self.error_window.focus()
+        self.login_func(self.entry_username.get(), self.entry_password.get())
 
     def guest(self):
-        response = auth.get_token()
-        self.master.logged_in = False
         self.master.changeView(ViewType.MENU)
 
     def on_key_press(self, event):

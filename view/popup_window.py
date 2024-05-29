@@ -3,11 +3,11 @@ from customtkinter import CTkToplevel, CTkLabel, CTkButton
 from prefs import preferences
 
 
-class ErrorWindow(CTkToplevel):
-    def __init__(self, master, message="EMPTY"):
+class PopupWindow(CTkToplevel):
+    def __init__(self, master, message="EMPTY", header="Error"):
         super().__init__(master=master)
         self.geometry("300x100")
-        self.title("Error")
+        self.title(header)
         self.iconbitmap(preferences["ICON_PATH"])
 
         self.create_widgets(message)
