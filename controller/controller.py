@@ -8,9 +8,9 @@ from viewlist import ViewType
 
 class Controller:
     def __init__(self):
-        self.app = App(lambda e: self.change_view(ViewType.MENU))
+        self.app = App(lambda: self.change_view(ViewType.MENU))
         self.token = None
-        self.session_duration = None
+        self.session_expiry = None
         self.curr_view = None
 
     def run(self):
@@ -26,14 +26,17 @@ class Controller:
             case ViewType.LOGIN:
                 self.app.geometry("450x450")
                 self.curr_view = Login(self.app, self.login, lambda e: self.change_view(ViewType.REGISTER))
+                self.app.home_button(False)
 
             case ViewType.REGISTER:
                 self.app.geometry("450x500")
                 self.curr_view = Register(self.app, self.register, lambda e: self.change_view(ViewType.LOGIN))
+                self.app.home_button(False)
 
             case ViewType.MENU:
                 self.app.geometry("800x450")
-                self.curr_view = Menu(self.app)
+                self.curr_view = Menu(self.app, self.change_view)
+                self.app.home_button(False)
 
             case ViewType.UPLOAD:
                 self.app.geometry("800x400")
@@ -41,7 +44,9 @@ class Controller:
                 self.app.home_button(True)
 
             case ViewType.FILE_LIST:
-                pass
+                self.app.geometry("800x450")
+                self.curr_view = MyFiles(self.app)
+                self.app.home_button(True)
 
         self.curr_view.grid(row=0, column=0, sticky="")
         self.app.grid_rowconfigure(0, weight=1)
@@ -53,7 +58,7 @@ class Controller:
 
         if status:
             self.token = token
-            self.session_duration = expiry
+            self.session_expiry = datetime.datetime.strptime(expiry, "%Y-%m-%dT%H:%M:%S.%fZ")
             self.change_view(ViewType.MENU)
 
     def register(self, username: str, password: str):
@@ -75,9 +80,9 @@ class Controller:
         self.change_view(ViewType.MENU)
 
     def check_expiration(self):
-        if not datetime.datetime.now() < self.session_duration:
-            popup = PopupWindow(self.app, "Session expired. Please login again.", "Info")
-            self.change_view(ViewType.LOGIN)
-            return True
+        if datetime.datetime.now(datetime.UTC) < self.session_expiry:
+            return False
 
-        return False
+        popup = PopupWindow(self.app, "Session expired. Please login again.", "Info")
+        self.change_view(ViewType.LOGIN)
+        return True
