@@ -9,8 +9,6 @@ def login(username: str, password: str) -> (bool, str, datetime):
     status = response.json()['status']
     code = response.status_code
 
-    print(f"{response.json()['session_expiry']}")
-
     if status == "success" and code == 200:
         token = response.json().get('session_key', None)
         expiry = datetime.strptime(response.json()['session_expiry'], "%Y-%m-%dT%H:%M:%S.%fZ")
@@ -28,3 +26,12 @@ def register(username: str, password: str) -> (bool, str):
         return True, None
 
     return False, response.json()['message']
+
+
+def check_connection():
+    try:
+        response = requests.get(preferences['API_URL'])
+    except requests.exceptions.ConnectionError:
+        return False
+
+    return True

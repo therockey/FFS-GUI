@@ -1,5 +1,6 @@
 import datetime
 
+import auth
 from auth import login as auth_login, register as auth_register
 from file_ops import upload_file
 from view import *
@@ -15,6 +16,8 @@ class Controller:
 
     def run(self):
         self.change_view(ViewType.LOGIN)
+        if not auth.check_connection():
+            popup = PopupWindow(self.app, "Server not reachable. Please try again later.", "Error", lambda: self.app.quit())
         self.app.mainloop()
 
     def change_view(self, view: ViewType):
@@ -58,7 +61,7 @@ class Controller:
 
         if status:
             self.token = token
-            self.session_expiry = datetime.datetime.strptime(expiry, "%Y-%m-%dT%H:%M:%S.%fZ")
+            self.session_expiry = expiry
             self.change_view(ViewType.MENU)
 
     def register(self, username: str, password: str):
