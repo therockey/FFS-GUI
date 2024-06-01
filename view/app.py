@@ -1,6 +1,6 @@
 from customtkinter import *
-from view.preferences import Preferences
-from view.about import About
+from view import *
+from PIL import Image
 from prefs import preferences
 from SlickCTk.slick_context_menu import SlickContextMenu
 
@@ -47,8 +47,13 @@ class App(CTk):
 
     def home_button(self, switch: bool):
         if switch:
-            self.home_btn = CTkButton(self, text="Home", command=self.home_btn_func)
-            self.home_btn.place(x=0, y=0, anchor=NW)
+            self.home_btn = CTkButton(self, text="",
+                                      image=CTkImage(Image.open("./assets/home.webp"),
+                                                     size=(25, 25)),
+                                      width=50, height=50,
+                                      command=self.home_btn_func)
+            self.home_btn.place(x=10, y=10, anchor=NW)
         else:
-            self.home_btn.destroy()
-            self.home_btn = None
+            if self.home_btn is not None:
+                self.home_btn.destroy()
+                self.home_btn = None
