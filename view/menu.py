@@ -5,9 +5,10 @@ from viewlist import ViewType
 
 
 class Menu(CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, menu_func: callable):
         super().__init__(master=master)
         self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.menu_func = menu_func
         self.create_widgets()
 
     def create_widgets(self):
@@ -16,7 +17,7 @@ class Menu(CTkFrame):
 
         self.upload_button = CTkButton(self.upload_frame, text="",
                                        image=CTkImage(Image.open("./assets/upload.webp"), size=(50, 50)), width=100,
-                                       height=100, command=lambda: self.master.changeView(ViewType.UPLOAD))
+                                       height=100, command=lambda: self.menu_func(ViewType.UPLOAD))
         self.upload_label = CTkLabel(self.upload_frame, text="Upload")
 
         self.upload_button.pack()
@@ -28,7 +29,7 @@ class Menu(CTkFrame):
 
         self.my_files_button = CTkButton(self.my_files_frame, text="",
                                          image=CTkImage(Image.open("./assets/my_files.webp"), size=(50, 50)), width=100, height=100,
-                                         command=lambda: self.master.changeView(ViewType.FILE_LIST))
+                                         command=lambda: self.menu_func(ViewType.FILE_LIST))
         self.my_files_label = CTkLabel(self.my_files_frame, text="My Files")
 
         self.my_files_button.pack()
@@ -40,7 +41,7 @@ class Menu(CTkFrame):
 
         self.shared_files_button = CTkButton(self.shared_files_frame, text="",
                                              image=CTkImage(Image.open("./assets/shared_files.webp"), size=(50, 50)), width=100, height=100,
-                                             command=lambda: self.master.changeView(ViewType.SHARED_FILES))
+                                             command=lambda: self.menu_func(ViewType.SHARED_FILES))
         self.shared_files_label = CTkLabel(self.shared_files_frame, text="Shared Files")
 
         self.shared_files_button.pack()

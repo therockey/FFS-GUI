@@ -6,3 +6,4 @@ from view.upload import Upload
 from view.preferences import Preferences
 from view.popup_window import PopupWindow
 from view.about import About
+from view.my_files import MyFiles

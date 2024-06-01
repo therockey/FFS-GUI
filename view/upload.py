@@ -26,9 +26,6 @@ class Upload(CTkFrame):
 
         self.upload_file_button = CTkButton(self, text="Upload", command=lambda: self.upload_file(self.file_path), state="disabled")
 
-
-
-
         self.pick_file_button.pack(pady=10)
         self.file_label.pack(pady=10)
         self.upload_file_button.pack(pady=10)
