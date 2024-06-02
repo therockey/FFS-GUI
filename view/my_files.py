@@ -9,11 +9,8 @@ class MyFiles(CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.file_list = CTkListbox(self)
-        self.file_list.pack(side="left", fill="y", expand=True, padx=10, pady=10)
 
         self.btn_frame = CTkFrame(self)
-        self.btn_frame.pack(side="right", fill="y")
         # Create the buttons
         self.download_button = CTkButton(self.btn_frame, text="Download",
                                          image=CTkImage(Image.open("./assets/upload.webp").rotate(180)),
@@ -34,12 +31,10 @@ class MyFiles(CTkFrame):
                                        command=self.delete_file)
         self.delete_button.grid(row=3, column=0, padx=10, pady=10)
 
-        # Configure the grid
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(1, weight=1)
-        self.grid_rowconfigure(2, weight=1)
-        self.grid_rowconfigure(3, weight=1)
-        self.grid_columnconfigure(0, weight=1)
+        self.btn_frame.pack(side="left", fill="y", pady=100)
+
+        self.file_list = CTkListbox(self)
+        self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
     def download_file(self):
         pass
