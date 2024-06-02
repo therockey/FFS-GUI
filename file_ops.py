@@ -4,7 +4,7 @@ from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
 import os
 
 
-def upload_file(file_path, var) -> str | None:
+def upload_file(file_path, var, token) -> str | None:
     if not os.path.isfile(file_path):
         return None
 
@@ -26,5 +26,3 @@ def upload_file(file_path, var) -> str | None:
                                           'filename': filename,
                                           'filesize': str(file_size)})
         return preferences["API_URL"]+response.json()['url']
-
-

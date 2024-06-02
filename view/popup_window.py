@@ -13,6 +13,7 @@ class PopupWindow(CTkToplevel):
 
         self.create_widgets(message)
         self.focus()
+        self.grab_set()
 
     def create_widgets(self, message):
         self.label = CTkLabel(self, text=message)
