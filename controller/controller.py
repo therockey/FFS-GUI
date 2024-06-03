@@ -1,4 +1,5 @@
 import datetime
+import webbrowser
 from tkinter import DoubleVar
 import auth
 from auth import login as auth_login, register as auth_register
@@ -52,7 +53,13 @@ class Controller:
 
             case ViewType.FILE_LIST:
                 self.app.geometry("800x450")
-                self.curr_view = MyFiles(self.app)
+                files = auth.get_file_list(self.session)
+                self.curr_view = MyFiles(self.app,
+                                         files,
+                                         self.download,
+                                         self.share,
+                                         self.private,
+                                         self.delete)
                 self.app.home_button(True)
 
                 default_layout = False
@@ -101,6 +108,17 @@ class Controller:
         post_upload.focus()
         post_upload.grab_set()
 
+    def delete(self, file_token: str):
+        if self.check_expiration():
+            return
+
+        response_msg = delete_file(file_token, self.session)
+
+        popup = PopupWindow(self.app, response_msg, "Info")
+
+    def download(self, file_token: str):
+        webbrowser.open(f"{preferences['API_URL']}/download/{file_token}")
+
     def share(self, file_token: str, user: str):
         if self.check_expiration():
             return
@@ -108,6 +126,14 @@ class Controller:
         response_msg = share_file(file_token, user, self.session)
 
         # Open a popup window with the response
+        popup = PopupWindow(self.app, response_msg, "Info")
+
+    def private(self, file_token: str):
+        if self.check_expiration():
+            return
+
+        response_msg = private_file(file_token, self.session)
+
         popup = PopupWindow(self.app, response_msg, "Info")
 
     def check_expiration(self):
