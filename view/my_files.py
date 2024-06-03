@@ -56,8 +56,9 @@ class MyFiles(CTkFrame):
 
     def get_selected_file(self) -> str | None:
         selection = self.file_list.get()
-        if selection:
-            return self.files[selection]['file_token']
+        for file in self.files:
+            if file['filename'] == selection:
+                return file['file_token']
 
         return None
 
