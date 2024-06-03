@@ -18,9 +18,9 @@ class Controller:
     def run(self):
         self.change_view(ViewType.LOGIN)
         if not auth.check_connection():
-            popup = PopupWindow(self.app,
-                                "Server not reachable. Please try again later.", "Error",
-                                lambda: self.app.quit())
+            PopupWindow(self.app,
+                        "Server not reachable. Please try again later.", "Error",
+                        lambda: self.app.quit())
         self.app.mainloop()
 
     def change_view(self, view: ViewType):
@@ -56,6 +56,7 @@ class Controller:
             case ViewType.FILE_LIST:
                 self.app.geometry("800x450")
                 files = auth.get_file_list(self.session)
+                print(files)
                 self.curr_view = MyFiles(self.app,
                                          files,
                                          self.download,
@@ -93,7 +94,7 @@ class Controller:
             self.session_expiry = session_expiry
             self.change_view(ViewType.MENU)
         else:
-            popup = PopupWindow(self.app, session, "Error")
+            PopupWindow(self.app, session, "Error")
 
     def register(self, username: str, password: str):
         status, message = auth_register(username, password)
@@ -101,7 +102,7 @@ class Controller:
         status_str = "Success" if status else "Error"
         message = message if not status else "Registration successful"
 
-        popup = PopupWindow(self.app, message, status_str)
+        PopupWindow(self.app, message, status_str)
 
         if status:
             self.change_view(ViewType.LOGIN)
@@ -126,7 +127,7 @@ class Controller:
 
         response_msg = delete_file(file_token, self.session)
 
-        popup = PopupWindow(self.app, response_msg, "Info")
+        PopupWindow(self.app, response_msg, "Info")
 
     def download(self, file_token: str):
         webbrowser.open(f"{preferences['API_URL']}/download/{file_token}")
@@ -138,7 +139,7 @@ class Controller:
         response_msg = share_file(file_token, user, self.session)
 
         # Open a popup window with the response
-        popup = PopupWindow(self.app, response_msg, "Info")
+        PopupWindow(self.app, response_msg, "Info")
 
     def private(self, file_token: str):
         if self.check_expiration():
@@ -146,12 +147,12 @@ class Controller:
 
         response_msg = private_file(file_token, self.session)
 
-        popup = PopupWindow(self.app, response_msg, "Info")
+        PopupWindow(self.app, response_msg, "Info")
 
     def check_expiration(self):
         if datetime.datetime.utcnow() < self.session_expiry:
             return False
 
-        popup = PopupWindow(self.app, "Session expired. Please login again.", "Info")
+        PopupWindow(self.app, "Session expired. Please login again.", "Info")
         self.change_view(ViewType.LOGIN)
         return True
