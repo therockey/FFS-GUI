@@ -56,7 +56,6 @@ class Controller:
             case ViewType.FILE_LIST:
                 self.app.geometry("800x450")
                 files = auth.get_file_list(self.session)
-                print(files)
                 self.curr_view = MyFiles(self.app,
                                          files,
                                          self.download,

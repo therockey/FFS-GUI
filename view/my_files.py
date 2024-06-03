@@ -20,6 +20,7 @@ class MyFiles(CTkFrame):
         self.delete_file = delete_file
 
         self.create_widgets()
+        self.display_files()
 
     def create_widgets(self):
 
@@ -49,8 +50,8 @@ class MyFiles(CTkFrame):
         self.file_list = CTkListbox(self, multiple_selection=False)
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
-    def display_files(self, files: list[dict]):
-        for file in files:
+    def display_files(self):
+        for file in self.files:
             self.file_list.insert("END", file['filename'])
 
     def get_selected_file(self) -> str | None:
