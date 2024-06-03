@@ -1,18 +1,22 @@
 from datetime import datetime
 import requests
+from requests import Session
 from prefs import preferences
 
 
-def login(username: str, password: str) -> (bool, str, datetime):
+def login(username: str, password: str) -> (bool, Session, datetime):
     response = requests.post(f"{preferences['API_URL']}/login/", data={"username": username, "password": password})
 
     status = response.json()['status']
     code = response.status_code
 
     if status == "success" and code == 200:
-        token = response.json().get('session_key', None)
+        token = response.json()['session_key']
+        session = Session()
+        session.cookies['sessionid'] = token
         expiry = datetime.strptime(response.json()['session_expiry'], "%Y-%m-%dT%H:%M:%S.%fZ")
-        return True, token, expiry
+
+        return True, session, expiry
 
     return False, None, None
 
