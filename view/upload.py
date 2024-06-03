@@ -1,3 +1,4 @@
+from PIL import Image
 from customtkinter import *
 from prefs import preferences
 import os
@@ -20,8 +21,14 @@ class Upload(CTkFrame):
         self.progress_string = StringVar()
 
         self.pick_file_button = CTkButton(self, text="Pick file", command=self.pick_file)
-        self.file_label = CTkLabel(self, text="No file selected")
 
+        self.file_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
+        self.file_icon = CTkLabel(self.file_frame, text='')
+        self.file_label = CTkLabel(self.file_frame, text="No file selected")
+
+        self.size_label = CTkLabel(self, text="")
+
+        self.bar_label = CTkLabel(self, text="Progress:")
         self.progress_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
         self.progress_bar = CTkProgressBar(self.progress_frame, variable=self.progress)
         self.progress_label = CTkLabel(self.progress_frame, textvariable=self.progress_string)
@@ -29,12 +36,18 @@ class Upload(CTkFrame):
         self.upload_file_button = CTkButton(self, text="Upload", command=self.upload_file, state="disabled")
 
         self.pick_file_button.pack(pady=10)
-        self.file_label.pack(pady=10)
+
+        self.file_icon.pack(side="left", pady=5)
+        self.file_label.pack(side="left", pady=0)
+        self.file_frame.pack(pady=0)
+
+        self.size_label.pack(pady=0)
         self.upload_file_button.pack(pady=10)
 
-        self.progress_bar.pack(side="left", pady=10)
-        self.progress_label.pack(side="left", pady=20)
-        self.progress_frame.pack(pady=10)
+        self.bar_label.pack(pady=0)
+        self.progress_bar.pack(side="left", padx=10)
+        self.progress_label.pack(side="left", padx=10)
+        self.progress_frame.pack(pady=0)
 
     def pick_file(self):
         file_path = filedialog.askopenfilename()
@@ -43,6 +56,8 @@ class Upload(CTkFrame):
 
         self.file_path = file_path
         self.file_label.configure(text=os.path.basename(file_path))
+        self.file_icon.configure(image=CTkImage(Image.open("./assets/file.webp"), size=(20, 20)))
+        self.size_label.configure(text=f"Size: {round(os.path.getsize(file_path) / 1024 / 1024, 2)} MB")
         self.upload_file_button.configure(state="normal")
 
     def upload_file(self):
