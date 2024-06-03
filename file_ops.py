@@ -5,8 +5,13 @@ import os
 
 
 def upload_file(file_path, var, session: Session) -> str | None:
+    # Check if file exists
     if not os.path.isfile(file_path):
         return None
+
+    # Check if session is provided, if it isn't assume a guest upload and create a new, unauthenticated one
+    if not session:
+        session = Session()
 
     with open(file_path, 'rb') as f:
         file_size = os.path.getsize(file_path)

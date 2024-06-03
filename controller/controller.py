@@ -116,8 +116,6 @@ class Controller:
 
         url = upload_file(file_path, var, self.session)
 
-        print(f"URL: {url}")
-
         post_upload = PostUpload(self.app, url)
         post_upload.focus()
         post_upload.grab_set()
