@@ -14,7 +14,6 @@ class MyFiles(CTkFrame):
         super().__init__(master=master, width=650, height=300)
 
         self.files = files
-
         self.download_file = download_file
         self.share_file = share_file
         self.make_private = make_private
@@ -54,26 +53,33 @@ class MyFiles(CTkFrame):
         for file in files:
             self.file_list.insert("END", file['filename'])
 
-    def get_selected_file(self):
+    def get_selected_file(self) -> str | None:
         selection = self.file_list.get()
-        return self.files[selection]['file_token']
+        if selection:
+            return self.files[selection]['file_token']
+
+        return None
 
     def download(self):
         file_token = self.get_selected_file()
-        self.download_file(file_token)
+        if file_token:
+            self.download_file(file_token)
 
     def share(self):
         file_token = self.get_selected_file()
-        dialog = ShareDialog(self, self.share_file, file_token)
-        dialog.grab_set()
+        if file_token:
+            dialog = ShareDialog(self, self.share_file, file_token)
+            dialog.grab_set()
 
     def private(self):
         file_token = self.get_selected_file()
-        self.make_private(file_token)
+        if file_token:
+            self.make_private(file_token)
 
     def delete(self):
         file_token = self.get_selected_file()
-        self.delete_file(file_token)
+        if file_token:
+            self.delete_file(file_token)
 
 
 class ShareDialog(CTkToplevel):

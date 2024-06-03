@@ -67,8 +67,14 @@ class Controller:
 
             case ViewType.SHARED_FILES:
                 self.app.geometry("800x450")
-                self.curr_view = SharedFiles(self.app)
+                files = []
+                self.curr_view = SharedFiles(self.app,
+                                             files,
+                                             self.download)
                 self.app.home_button(True)
+
+                default_layout = False
+                self.curr_view.pack(side="right", fill="both", expand=True)
 
         if default_layout:
             self.curr_view.grid(row=0, column=0, sticky="")
