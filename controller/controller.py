@@ -33,12 +33,14 @@ class Controller:
         match view:
             case ViewType.LOGIN:
                 self.app.geometry("450x450")
-                self.curr_view = Login(self.app, self.login, lambda e: self.change_view(ViewType.REGISTER))
+                self.curr_view = Login(self.app, self.login,
+                                       lambda: self.change_view(ViewType.REGISTER),
+                                       self.guest)
                 self.app.home_button(False)
 
             case ViewType.REGISTER:
                 self.app.geometry("450x500")
-                self.curr_view = Register(self.app, self.register, lambda e: self.change_view(ViewType.LOGIN))
+                self.curr_view = Register(self.app, self.register, lambda: self.change_view(ViewType.LOGIN))
                 self.app.home_button(False)
 
             case ViewType.MENU:
@@ -103,6 +105,10 @@ class Controller:
 
         if status:
             self.change_view(ViewType.LOGIN)
+
+    def guest(self):
+        self.change_view(ViewType.UPLOAD)
+        self.app.home_button(False)
 
     def upload(self, file_path: str, var: DoubleVar):
         if self.check_expiration():
