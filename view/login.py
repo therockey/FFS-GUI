@@ -1,5 +1,4 @@
 from customtkinter import *
-from viewlist import ViewType
 from prefs import preferences
 
 

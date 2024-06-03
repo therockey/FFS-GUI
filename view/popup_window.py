@@ -1,5 +1,4 @@
 from customtkinter import CTkToplevel, CTkLabel, CTkButton
-
 from prefs import preferences
 
 

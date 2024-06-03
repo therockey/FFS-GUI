@@ -92,7 +92,7 @@ class PostUpload(CTkToplevel):
 
         self.qr_code_image = ImageTk.PhotoImage(img)
 
-        self.qr_code_label = CTkLabel(self, image=self.qr_code_image)
+        self.qr_code_label = CTkLabel(self, image=self.qr_code_image, text='')
         self.qr_code_label.pack()
 
         self.copy_button = CTkButton(self, text="Copy URL", command=self.copy_url)
