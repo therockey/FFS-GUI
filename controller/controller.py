@@ -6,6 +6,7 @@ from auth import login as auth_login, register as auth_register
 from file_ops import *
 from view import *
 from viewlist import ViewType
+from prefs import preferences
 
 
 class Controller:

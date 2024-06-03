@@ -70,6 +70,8 @@ class Upload(CTkFrame):
 class PostUpload(CTkToplevel):
     def __init__(self, master, url):
         super().__init__(master=master)
+        self.title("Upload successful!")
+        self.geometry("600x350")
         self.create_widgets(url)
 
     def create_widgets(self, url):
@@ -89,14 +91,17 @@ class PostUpload(CTkToplevel):
         qr.make(fit=True)
 
         img = qr.make_image(fill='black', back_color='white')
+        img.save("qrcode.png")
 
-        self.qr_code_image = ImageTk.PhotoImage(img)
+        self.qr_code_image = CTkImage(Image.open("qrcode.png"), size=(200, 200))
 
         self.qr_code_label = CTkLabel(self, image=self.qr_code_image, text='')
-        self.qr_code_label.pack()
+        self.qr_code_label.pack(pady=10)
 
-        self.copy_button = CTkButton(self, text="Copy URL", command=self.copy_url)
-        self.copy_button.pack()
+        self.copy_button = CTkButton(self, text="Copy URL",
+                                     image=CTkImage(Image.open("./assets/copy.webp")),
+                                     command=self.copy_url)
+        self.copy_button.pack(pady=5)
 
     def copy_url(self):
         self.clipboard_clear()
