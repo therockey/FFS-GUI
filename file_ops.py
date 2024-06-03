@@ -1,10 +1,10 @@
-import requests
+from requests import Session
 from prefs import preferences
 from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
 import os
 
 
-def upload_file(file_path, var, token) -> str | None:
+def upload_file(file_path, var, session: Session) -> str | None:
     if not os.path.isfile(file_path):
         return None
 
@@ -21,8 +21,15 @@ def upload_file(file_path, var, token) -> str | None:
         )
         monitor = MultipartEncoderMonitor(encoder, progress_callback)
 
-        response = requests.post(f'{preferences["API_URL"]}/upload/', data=monitor,
+        response = session.post(f'{preferences["API_URL"]}/upload/', data=monitor,
                                  headers={'Content-Type': monitor.content_type,
                                           'filename': filename,
                                           'filesize': str(file_size)})
-        return preferences["API_URL"]+response.json()['url']
+        return preferences["API_URL"] + response.json()['url']
+
+
+def share_file(file_token, user, session: Session) -> str | None:
+    response = session.post(f'{preferences["API_URL"]}/share/',
+                            data={'file_token': file_token, 'username': user})
+
+    return response.json()['message']

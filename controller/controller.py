@@ -2,7 +2,7 @@ import datetime
 from tkinter import DoubleVar
 import auth
 from auth import login as auth_login, register as auth_register
-from file_ops import upload_file
+from file_ops import *
 from view import *
 from viewlist import ViewType
 
@@ -100,6 +100,15 @@ class Controller:
         post_upload = PostUpload(self.app, url)
         post_upload.focus()
         post_upload.grab_set()
+
+    def share(self, file_token: str, user: str):
+        if self.check_expiration():
+            return
+
+        response_msg = share_file(file_token, user, self.session)
+
+        # Open a popup window with the response
+        popup = PopupWindow(self.app, response_msg, "Info")
 
     def check_expiration(self):
         if datetime.datetime.utcnow() < self.session_expiry:
