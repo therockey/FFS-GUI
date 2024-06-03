@@ -84,6 +84,8 @@ class Controller:
             self.session = session
             self.session_expiry = session_expiry
             self.change_view(ViewType.MENU)
+        else:
+            popup = PopupWindow(self.app, session, "Error")
 
     def register(self, username: str, password: str):
         status, message = auth_register(username, password)
