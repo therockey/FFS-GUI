@@ -34,13 +34,13 @@ class Controller:
             case ViewType.LOGIN:
                 self.app.geometry("450x450")
                 self.curr_view = Login(self.app, self.login,
-                                       lambda: self.change_view(ViewType.REGISTER),
+                                       lambda e: self.change_view(ViewType.REGISTER),
                                        self.guest)
                 self.app.home_button(False)
 
             case ViewType.REGISTER:
                 self.app.geometry("450x500")
-                self.curr_view = Register(self.app, self.register, lambda: self.change_view(ViewType.LOGIN))
+                self.curr_view = Register(self.app, self.register, lambda e: self.change_view(ViewType.LOGIN))
                 self.app.home_button(False)
 
             case ViewType.MENU:
