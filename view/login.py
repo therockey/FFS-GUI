@@ -1,3 +1,4 @@
+from PIL import Image
 from customtkinter import *
 from prefs import preferences
 
@@ -16,6 +17,10 @@ class Login(CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
+
+        self.image = CTkLabel(self, text='', image=CTkImage(Image.open("./assets/icon.ico"), size=(100, 100)))
+        self.title = CTkLabel(self, text="FastFileStore", font=("Segoe", 20, "bold"))
+
 
         # Create entry fields
         self.entry_username = CTkEntry(self, placeholder_text="Username")
@@ -36,6 +41,8 @@ class Login(CTkFrame):
         self.register_label.bind("<Button-1>", self.register_view_func)
 
         # Vertical layout using pack
+        self.image.pack(pady=5)
+        self.title.pack(pady=5)
         self.entry_username.pack(pady=10)
         self.entry_password.pack(pady=10)
         self.show_pass_check.pack(pady=5)
