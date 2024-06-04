@@ -26,7 +26,7 @@ def upload_file(file_path, var, session: Session) -> str | None:
         )
         monitor = MultipartEncoderMonitor(encoder, progress_callback)
 
-        response = session.post(f'{preferences["API_URL"]}/upload/', data=monitor,
+        response = session.post(f'{preferences["API_URL"]}/file/', data=monitor,
                                 headers={'Content-Type': monitor.content_type,
                                          'filename': filename,
                                          'filesize': str(file_size)})
@@ -34,15 +34,14 @@ def upload_file(file_path, var, session: Session) -> str | None:
 
 
 def delete_file(file_token, session: Session) -> str | None:
-    response = session.post(f'{preferences["API_URL"]}/delete/', data={'file_token': file_token})
-
+    response = session.delete(f'{preferences["API_URL"]}/file/{file_token}/')
+    print(response.json())
+    print(response.json()['message'])
     return response.json()['message']
 
 
 def share_file(file_token, user, session: Session) -> str | None:
-    response = session.post(f'{preferences["API_URL"]}/share/',
-                            data={'file_token': file_token, 'username': user})
-
+    response = session.post(f'{preferences["API_URL"]}/share/{file_token}/{user}/')
     return response.json()['message']
 
 
