@@ -69,9 +69,8 @@ class Controller:
 
             case ViewType.SHARED_FILES:
                 self.app.geometry("800x450")
-                files = []
                 self.curr_view = SharedFiles(self.app,
-                                             files,
+                                             lambda: auth.get_shared_file_list(self.session),
                                              self.download)
                 self.app.home_button(True)
 

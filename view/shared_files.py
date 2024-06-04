@@ -1,18 +1,21 @@
 from PIL import Image
 from customtkinter import *
 from CTkListbox import *
+from misc import format_file_size
 
 
 class SharedFiles(CTkFrame):
     def __init__(self, master,
-                 files: list[dict],
+                 get_files: callable,
                  download_file: callable):
         super().__init__(master=master)
 
-        self.files = files
+        self.files = []
+        self.get_files = get_files
         self.download_file = download_file
 
         self.create_widgets()
+        self.display_files()
 
     def create_widgets(self):
         self.btn_frame = CTkFrame(self)
@@ -34,13 +37,21 @@ class SharedFiles(CTkFrame):
 
         self.btn_frame.pack(side="left", fill="y", pady=100)
 
-        self.file_list = CTkListbox(self, multiple_selection=False)
+        self.file_list = CTkListbox(self, multiple_selection=False, command=lambda e: self.update_file_info())
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
+
+    def display_files(self):
+        self.file_list.insert(0, "")
+        self.file_list.delete("all")
+        self.files = self.get_files()
+        for file in self.files:
+            self.file_list.insert("END", file['filename'])
 
     def get_selected_file(self) -> str | None:
         selection = self.file_list.get()
-        if selection:
-            return self.files[selection]['file_token']
+        for file in self.files:
+            if file['filename'] == selection:
+                return file['file_token']
 
         return None
 
@@ -50,6 +61,14 @@ class SharedFiles(CTkFrame):
             self.download_file(file_token)
 
     def update_file_info(self):
-        file = self.files[self.file_list.get()]
+        file = None
+        selection = self.file_list.get()
+        for f in self.files:
+            if f['filename'] == selection:
+                file = f
+                break
 
+        self.filename.configure(text=f"Filename: {file['filename']}")
+        self.owner.configure(text=f"Owner: {file['owner']}")
+        self.sizelabel.configure(text=f"Size: {format_file_size(file['file_size'])}")
 

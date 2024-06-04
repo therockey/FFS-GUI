@@ -34,8 +34,14 @@ def register(username: str, password: str) -> (bool, str):
     return False, response.json()['message']
 
 
-def get_file_list(session: Session) -> list:
+def get_file_list(session: Session) -> list[dict]:
     response = session.get(f"{preferences['API_URL']}/user_filenames/")
+
+    return response.json()['files']
+
+
+def get_shared_file_list(session: Session) -> list[dict]:
+    response = session.get(f"{preferences['API_URL']}/share")
 
     return response.json()['files']
 
