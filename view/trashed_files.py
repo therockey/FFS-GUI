@@ -34,7 +34,7 @@ class TrashedFiles(CTkFrame):
         self.restore_button = CTkButton(self.btn_frame, text="Restore",
                                         image=CTkImage(Image.open("./assets/restore.webp")),
                                         command=self.restore)
-        self.delete_button = CTkButton(self.btn_frame, text="Download",
+        self.delete_button = CTkButton(self.btn_frame, text="Delete",
                                        image=CTkImage(Image.open("./assets/delete.webp")),
                                        command=self.delete)
 
@@ -78,19 +78,24 @@ class TrashedFiles(CTkFrame):
         if file_token:
             self.delete_file(file_token)
             self.display_files()
+            self.update_file_info()
 
     def restore(self):
         file_token = self.get_selected_file()
         if file_token:
             self.restore_file(file_token)
             self.display_files()
+            self.update_file_info()
 
     def update_file_info(self):
         """
         Method for updating the file info labels when a new file is selected in the listbox
         :return:
         """
-        file = None
+        file = {
+            'filename': '',
+            'file_size': 0
+        }
         selection = self.file_list.get()
         for f in self.files:
             if f['filename'] == selection:

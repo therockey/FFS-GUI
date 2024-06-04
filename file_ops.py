@@ -44,7 +44,7 @@ def trash_file(file_token, session: Session) -> (bool, (str | None)):
 
 
 def delete_file(file_token, session: Session) -> (bool, (str | None)):
-    return file_op(session.delete(f'{preferences["API_URL"]}/file/bin/{file_token}/'))
+    return file_op(session.delete(f'{preferences["API_URL"]}/file/{file_token}/'))
 
 
 def restore_file(file_token, session: Session) -> (bool, (str | None)):

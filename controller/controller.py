@@ -93,6 +93,10 @@ class Controller:
                                               lambda: auth.get_trashed_file_list(self.session),
                                               self.delete_permanently,
                                               self.restore)
+                self.app.home_button(True)
+
+                default_layout = False
+                self.curr_view.pack(side="right", fill="both", expand=True)
 
         # If the view has a default layout, apply a grid layout to it
         if default_layout:
