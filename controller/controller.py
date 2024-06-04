@@ -50,7 +50,7 @@ class Controller:
                 self.app.home_button(False)
 
             case ViewType.UPLOAD:
-                self.app.geometry("800x400")
+                self.app.geometry("400x400")
                 self.curr_view = Upload(self.app, self.upload)
                 self.app.home_button(True)
 
@@ -110,11 +110,17 @@ class Controller:
         self.change_view(ViewType.UPLOAD)
         self.app.home_button(False)
 
-    def upload(self, file_path: str, var: DoubleVar):
+    def upload(self, file_path: str, var: DoubleVar, password: str | None):
         if self.check_expiration():
             return
 
-        url = upload_file(file_path, var, self.session)
+        if password is not None and len(password) == 0:
+            PopupWindow(self.app, "Password cannot be empty", "Error")
+            return
+
+        print(f"password inside controller.py: {password}")
+
+        url = upload_file(file_path, var, self.session, password)
 
         post_upload = PostUpload(self.app, url, self.curr_view.clear_selection)
         post_upload.focus()

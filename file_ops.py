@@ -4,7 +4,8 @@ from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
 import os
 
 
-def upload_file(file_path, var, session: Session) -> str | None:
+def upload_file(file_path, var, session: Session, password: str | None) -> str | None:
+    print(f"password inside file_ops.py: {password}")
     # Check if file exists
     if not os.path.isfile(file_path):
         return None
@@ -29,7 +30,8 @@ def upload_file(file_path, var, session: Session) -> str | None:
         response = session.post(f'{preferences["API_URL"]}/file/', data=monitor,
                                 headers={'Content-Type': monitor.content_type,
                                          'filename': filename,
-                                         'filesize': str(file_size)})
+                                         'filesize': str(file_size),
+                                         'password': password})
         return preferences["API_URL"] + response.json()['url']
 
 

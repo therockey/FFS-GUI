@@ -14,6 +14,7 @@ class Upload(CTkFrame):
         self.file_path = None
         self.upload_func = upload_func
         self.create_widgets()
+        self.password_field.configure(state="disabled")
 
     def create_widgets(self):
         self.progress = DoubleVar()
@@ -25,8 +26,15 @@ class Upload(CTkFrame):
         self.file_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
         self.file_icon = CTkLabel(self.file_frame, text='')
         self.file_label = CTkLabel(self.file_frame, text="No file selected")
-
         self.size_label = CTkLabel(self, text="")
+
+        self.password_checkbox = CTkCheckBox(self,
+                                             text='Password protected',
+                                             checkbox_width=15,
+                                             checkbox_height=15,
+                                             border_width=1,
+                                             command=self.toggle_password)
+        self.password_field = CTkEntry(self, placeholder_text="Password")
 
         self.bar_label = CTkLabel(self, text="Progress:")
         self.progress_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
@@ -40,8 +48,11 @@ class Upload(CTkFrame):
         self.file_icon.pack(side="left", pady=5)
         self.file_label.pack(side="left", pady=0)
         self.file_frame.pack(pady=0)
-
         self.size_label.pack(pady=0)
+
+        self.password_checkbox.pack(pady=5)
+        self.password_field.pack(pady=0)
+
         self.upload_file_button.pack(pady=10)
 
         self.bar_label.pack(pady=0)
@@ -67,13 +78,30 @@ class Upload(CTkFrame):
         self.size_label.configure(text="")
         self.upload_file_button.configure(state="disabled")
         self.progress.set(0)
+        self.password_checkbox.deselect()
+        self.password_field.delete(0, len(self.password_field.get()))
+        self.password_field.configure(state="disabled")
 
     def upload_file(self):
-        threading.Thread(target=self.upload_func, args=(self.file_path, self.progress)).start()
+        password = None
+        if self.password_checkbox.get():
+            password = self.password_field.get()
+
+        print(f"password inside upload.py: {password}")
+
+        threading.Thread(target=self.upload_func, args=(self.file_path, self.progress, password)).start()
 
     def update_progress_string(self, *args):
         percentage = round(self.progress.get() * 100) if self.progress.get() < 1 else 100
         self.progress_string.set(f"{percentage}%")
+
+    def toggle_password(self):
+        if self.password_checkbox.get():
+            self.password_field.configure(state="normal")
+        else:
+            # Clear and disable the password field
+            self.password_field.delete(0, len(self.password_field.get()))
+            self.password_field.configure(state="disabled")
 
 
 class PostUpload(CTkToplevel):
