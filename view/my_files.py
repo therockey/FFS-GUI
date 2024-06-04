@@ -52,6 +52,7 @@ class MyFiles(CTkFrame):
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
     def display_files(self):
+        self.file_list.insert(0, "")
         self.file_list.delete("all")
         self.files = self.get_files()
         for file in self.files:
