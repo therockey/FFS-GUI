@@ -4,7 +4,7 @@ from prefs import preferences
 import os
 import threading
 import qrcode
-from PIL import ImageTk
+from misc import format_file_size
 
 
 class Upload(CTkFrame):
@@ -57,7 +57,7 @@ class Upload(CTkFrame):
         self.file_path = file_path
         self.file_label.configure(text=os.path.basename(file_path))
         self.file_icon.configure(image=CTkImage(Image.open("./assets/file.webp"), size=(20, 20)))
-        self.size_label.configure(text=f"Size: {round(os.path.getsize(file_path) / 1024 / 1024, 2)} MB")
+        self.size_label.configure(text=f"Size: {format_file_size(os.path.getsize(file_path))}")
         self.upload_file_button.configure(state="normal")
 
     def clear_selection(self):
