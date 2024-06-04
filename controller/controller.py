@@ -56,9 +56,8 @@ class Controller:
 
             case ViewType.FILE_LIST:
                 self.app.geometry("800x450")
-                files = auth.get_file_list(self.session)
                 self.curr_view = MyFiles(self.app,
-                                         files,
+                                         lambda: auth.get_file_list(self.session),
                                          self.download,
                                          self.share,
                                          self.private,

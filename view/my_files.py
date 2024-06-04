@@ -5,7 +5,7 @@ from CTkListbox import *
 
 class MyFiles(CTkFrame):
     def __init__(self, master,
-                 files: list[dict],
+                 get_files: callable,
                  download_file: callable,
                  share_file: callable,
                  make_private: callable,
@@ -13,7 +13,8 @@ class MyFiles(CTkFrame):
 
         super().__init__(master=master, width=650, height=300)
 
-        self.files = files
+        self.get_files = get_files
+        self.files = []
         self.download_file = download_file
         self.share_file = share_file
         self.make_private = make_private
@@ -51,6 +52,8 @@ class MyFiles(CTkFrame):
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
     def display_files(self):
+        self.file_list.delete("all")
+        self.files = self.get_files()
         for file in self.files:
             self.file_list.insert("END", file['filename'])
 
@@ -82,6 +85,7 @@ class MyFiles(CTkFrame):
         file_token = self.get_selected_file()
         if file_token:
             self.delete_file(file_token)
+            self.display_files()
 
 
 class ShareDialog(CTkToplevel):
