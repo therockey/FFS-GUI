@@ -5,7 +5,6 @@ import os
 
 
 def upload_file(file_path, var, session: Session, password: str | None) -> str | None:
-    print(f"password inside file_ops.py: {password}")
     # Check if file exists
     if not os.path.isfile(file_path):
         return None
@@ -37,17 +36,17 @@ def upload_file(file_path, var, session: Session, password: str | None) -> str |
 
 def delete_file(file_token, session: Session) -> str | None:
     response = session.delete(f'{preferences["API_URL"]}/file/{file_token}/')
-    print(response.json())
-    print(response.json()['message'])
+
     return response.json()['message']
 
 
 def share_file(file_token, user, session: Session) -> str | None:
     response = session.post(f'{preferences["API_URL"]}/share/{file_token}/{user}/')
+
     return response.json()['message']
 
 
 def private_file(file_token, session: Session) -> str | None:
-    response = session.post(f'{preferences["API_URL"]}/private/', data={'file_token': file_token})
+    response = session.delete(f'{preferences["API_URL"]}/share/{file_token}')
 
     return response.json()['message']

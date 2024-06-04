@@ -87,8 +87,6 @@ class Upload(CTkFrame):
         if self.password_checkbox.get():
             password = self.password_field.get()
 
-        print(f"password inside upload.py: {password}")
-
         threading.Thread(target=self.upload_func, args=(self.file_path, self.progress, password)).start()
 
     def update_progress_string(self, *args):

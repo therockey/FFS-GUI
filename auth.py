@@ -34,6 +34,12 @@ def register(username: str, password: str) -> (bool, str):
     return False, response.json()['message']
 
 
+def logout(session: Session) -> bool:
+    response = session.post(f"{preferences['API_URL']}/logout/")
+
+    return response.json()['status'] == "success"
+
+
 def get_file_list(session: Session) -> list[dict]:
     response = session.get(f"{preferences['API_URL']}/user_filenames/")
 

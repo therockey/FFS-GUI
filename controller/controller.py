@@ -45,8 +45,8 @@ class Controller:
                 self.app.home_button(False)
 
             case ViewType.MENU:
-                self.app.geometry("800x450")
-                self.curr_view = Menu(self.app, self.change_view)
+                self.app.geometry("900x450")
+                self.curr_view = Menu(self.app, self.change_view, self.logout)
                 self.app.home_button(False)
 
             case ViewType.UPLOAD:
@@ -105,6 +105,18 @@ class Controller:
         if status:
             self.change_view(ViewType.LOGIN)
 
+    def logout(self):
+        if self.session is not None:
+            if auth.logout(self.session):
+                self.session = None
+                self.session_expiry = None
+                self.change_view(ViewType.LOGIN)
+            else:
+                PopupWindow(self.app, "Logout failed", "Error")
+        else:
+            PopupWindow(self.app, "No active session", "Error")
+            self.change_view(ViewType.LOGIN)
+
     def guest(self):
         self.change_view(ViewType.UPLOAD)
         self.app.home_button(False)
@@ -116,8 +128,6 @@ class Controller:
         if password is not None and len(password) == 0:
             PopupWindow(self.app, "Password cannot be empty", "Error")
             return
-
-        print(f"password inside controller.py: {password}")
 
         url = upload_file(file_path, var, self.session, password)
 
