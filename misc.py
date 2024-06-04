@@ -1,4 +1,9 @@
 def format_file_size(bytesize: int):
+    """
+    Format the file size in bytes to a human-readable format.
+    :param bytesize: The size of the file in bytes
+    :return:
+    """
     suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
     suffix_index = 0
 

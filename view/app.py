@@ -10,9 +10,12 @@ class App(CTk):
 
         self.current_ui = []
 
+        # Set the window properties such as the title, icon, and size
         self.title("FastFileStore")
         self.iconbitmap(preferences["ICON_PATH"])
         self.resizable(False, False)
+
+        # Add the passed through functions for later use
         self.home_btn_func = home_button_func
 
         self.pref_window = None
@@ -20,6 +23,11 @@ class App(CTk):
         self.home_btn = None
 
     def home_button(self, switch: bool):
+        """
+        Add or remove the home button
+        :param switch: boolean switch, which toggles the home button
+        :return:
+        """
         if switch:
             self.home_btn = CTkButton(self, text="",
                                       image=CTkImage(Image.open("./assets/home.webp"),

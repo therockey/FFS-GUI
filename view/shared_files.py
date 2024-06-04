@@ -13,6 +13,8 @@ class SharedFiles(CTkFrame):
         super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
 
         self.files = []
+
+        # Add the passed through functions for later use
         self.get_files = get_files
         self.download_file = download_file
 
@@ -20,30 +22,35 @@ class SharedFiles(CTkFrame):
         self.display_files()
 
     def create_widgets(self):
+
+        # Create the frame to hold the buttons beside the file list
         self.btn_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
+        # Create the buttons and file info labels
         self.filename = CTkLabel(self.btn_frame, text="Filename: ", wraplength=130)
-        self.filename.grid(row=0, column=0, padx=10, pady=5)
-
         self.sizelabel = CTkLabel(self.btn_frame, text="Size: ")
-        self.sizelabel.grid(row=1, column=0, padx=10, pady=5)
-
         self.owner = CTkLabel(self.btn_frame, text="Owner: ")
-        self.owner.grid(row=2, column=0, padx=10, pady=5)
-
         self.download_button = CTkButton(self.btn_frame, text="Download",
                                          image=CTkImage(Image.open("./assets/upload.webp").rotate(180)),
                                          command=self.download)
 
-        self.download_button.grid(row=3, column=0, padx=10, pady=10)
-
-        self.btn_frame.pack(side="left", fill="y", pady=100)
-
+        # Create the file list
         self.file_list = CTkListbox(self, multiple_selection=False,
                                     command=lambda e: self.update_file_info())
+
+        # Layout using pack and grid
+        self.filename.grid(row=0, column=0, padx=10, pady=5)
+        self.sizelabel.grid(row=1, column=0, padx=10, pady=5)
+        self.owner.grid(row=2, column=0, padx=10, pady=5)
+        self.download_button.grid(row=3, column=0, padx=10, pady=10)
+        self.btn_frame.pack(side="left", fill="y", pady=100)
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
     def display_files(self):
+        """
+        Method for fetching the files from the server and displaying them in the listbox
+        :return:
+        """
         self.file_list.insert(0, "")
         self.file_list.delete("all")
         self.files = self.get_files()
@@ -51,6 +58,10 @@ class SharedFiles(CTkFrame):
             self.file_list.insert("END", file['filename'])
 
     def get_selected_file(self) -> str | None:
+        """
+        Method for finding and returning the file token of the currently selected file in the listbox
+        :return: file token or None if no file is selected
+        """
         selection = self.file_list.get()
         for file in self.files:
             if file['filename'] == selection:
@@ -64,6 +75,10 @@ class SharedFiles(CTkFrame):
             self.download_file(file_token)
 
     def update_file_info(self):
+        """
+        Method for updating the file info labels when a new file is selected in the listbox
+        :return:
+        """
         file = None
         selection = self.file_list.get()
         for f in self.files:

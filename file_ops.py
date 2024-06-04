@@ -14,8 +14,10 @@ def upload_file(file_path, var, session: Session, password: str | None) -> (bool
         session = Session()
 
     with open(file_path, 'rb') as f:
+        # Get file size and name
         file_size = os.path.getsize(file_path)
         filename = file_path.split('/')[-1]
+
 
         def progress_callback(monitor):
             progress = monitor.bytes_read / file_size
@@ -32,10 +34,10 @@ def upload_file(file_path, var, session: Session, password: str | None) -> (bool
                                          'filesize': str(file_size),
                                          'password': password})
 
-        if response.status_code == 200:
+        if response.status_code == 200:  # If the file was uploaded successfully return the download link
             return True, preferences["API_URL"] + response.json()['url']
 
-        return False, response.json()['error']
+        return False, response.json()['error']  # If the file wasn't uploaded successfully return the error message
 
 
 def delete_file(file_token, session: Session) -> str | None:
@@ -48,12 +50,15 @@ def share_file(file_token, user, session: Session) -> (bool, (str | None)):
     response = session.post(f'{preferences["API_URL"]}/share/{file_token}/{user}/')
 
     if response.status_code == 200:
-        return True, response.json()['message']
+        return True, response.json()['message']  # If the file was shared successfully return the success message
 
-    return False, response.json()['error']
+    return False, response.json()['error']  # If the file wasn't shared successfully return the error message
 
 
-def private_file(file_token, session: Session) -> str | None:
+def private_file(file_token, session: Session) -> (bool, (str | None)):
     response = session.delete(f'{preferences["API_URL"]}/share/{file_token}')
 
-    return response.json()['message']
+    if response.status_code == 200:
+        return True, response.json()['message']  # If the file was made private successfully return the success message
+
+    return False, response.json()['error']  # If the file wasn't made private successfully return the error message

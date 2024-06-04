@@ -18,6 +18,8 @@ class Controller:
 
     def run(self):
         self.change_view(ViewType.LOGIN)
+
+        # Check if the server is reachable
         if not auth.check_connection():
             PopupWindow(self.app,
                         "Server not reachable. Please try again later.", "Error",
@@ -25,12 +27,20 @@ class Controller:
         self.app.mainloop()
 
     def change_view(self, view: ViewType):
+        """
+        Method for changing the current view of the application.
+        :param view: a value of the ViewType enum corresponding to the view to change to
+        :return:
+        """
+
+        # Destroy the current view if it exists
         if self.curr_view is not None:
             self.curr_view.destroy()
             self.app.current_ui.clear()
 
         default_layout = True
 
+        # Switch case for changing the view
         match view:
             case ViewType.LOGIN:
                 self.app.geometry("450x450")
@@ -77,6 +87,7 @@ class Controller:
                 default_layout = False
                 self.curr_view.pack(side="right", fill="both", expand=True)
 
+        # If the view has a default layout, apply a grid layout to it
         if default_layout:
             self.curr_view.grid(row=0, column=0, sticky="")
             self.app.grid_rowconfigure(0, weight=1)
@@ -87,6 +98,7 @@ class Controller:
     def login(self, username: str, password: str):
         status, session, session_expiry = auth_login(username, password)
 
+        # If the login was successful, set the session and change the view to the menu
         if status:
             self.session = session
             self.session_expiry = session_expiry
@@ -102,6 +114,7 @@ class Controller:
 
         PopupWindow(self.app, message, status_str)
 
+        # If the registration was successful, change the view back to the login screen
         if status:
             self.change_view(ViewType.LOGIN)
 
@@ -144,9 +157,11 @@ class Controller:
 
         response_msg = delete_file(file_token, self.session)
 
+        # Open a popup window with the response
         PopupWindow(self.app, response_msg, "Info")
 
     def download(self, file_token: str):
+        # Open the download link in the default web browser, which will then handle the download
         webbrowser.open(f"{preferences['API_URL']}/download/{file_token}")
 
     def share(self, file_token: str, user: str):
@@ -160,16 +175,22 @@ class Controller:
         # Open a popup window with the response
         PopupWindow(self.app, response_msg, header)
 
-
     def private(self, file_token: str):
         if self.check_expiration():
             return
 
-        response_msg = private_file(file_token, self.session)
+        status, response_msg = private_file(file_token, self.session)
 
-        PopupWindow(self.app, response_msg, "Info")
+        header = "Info" if status else "Error"
+
+        # Open a popup window with the response
+        PopupWindow(self.app, response_msg, header)
 
     def check_expiration(self):
+        """
+        Method for checking if the session has expired.
+        :return:
+        """
         if datetime.datetime.utcnow() < self.session_expiry:
             return False
 

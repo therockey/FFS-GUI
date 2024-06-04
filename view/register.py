@@ -9,8 +9,10 @@ class Register(CTkFrame):
 
         super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
 
+        # Add the passed through functions for later use
         self.register_func = register_func
         self.login_view_func = login_view_func
+
         self.create_widgets()
 
     def create_widgets(self):
@@ -32,11 +34,11 @@ class Register(CTkFrame):
         self.show_pass_check = CTkCheckBox(self, text="Show password", command=self.show_password, checkbox_width=15,
                                            checkbox_height=15, border_width=1)
 
-        # Create login label/button
+        # Create login button-label
         self.login_label = CTkLabel(self, text="Already have an account? Log in here", font=("Segoe", 10, "normal"))
         self.login_label.bind("<Button-1>", self.login_view_func)
 
-        # Create register button
+        # Create the register button
         self.button_register = CTkButton(self, text="Register",
                                          command=self.register_user,
                                          state='disabled')
@@ -60,11 +62,19 @@ class Register(CTkFrame):
         self.register_func(username, password)
 
     def on_key_press(self, event):
-        self.check_passwords(event)
-        if event.keysym == "Return":
+        """
+        Function to handle a keypress event
+        :param event: a keypress event
+        :return:
+        """
+        if self.check_passwords() and event.keysym == "Return":
             self.register_user()
 
     def show_password(self):
+        """
+        Function to show the password in the password entry field if the show_pass checkbox is checked
+        :return:
+        """
         if self.show_pass_check.get() == 1:
             self.entry_password.configure(show="")
             self.entry_password_repeat.configure(show="")
@@ -72,13 +82,19 @@ class Register(CTkFrame):
             self.entry_password.configure(show="*")
             self.entry_password_repeat.configure(show="*")
 
-    def check_passwords(self, event):
+    def check_passwords(self):
+        """
+        Function to check if the entered passwords match every time a keyboard input is detected
+        :return:
+        """
         password = self.entry_password.get()
         password_repeat = self.entry_password_repeat.get()
 
         if password == password_repeat and len(password) > 0:
             self.button_register.configure(state='normal')
             self.label_password_mismatch.pack_forget()
-        else:
-            self.button_register.configure(state='disabled')
-            self.label_password_mismatch.pack()
+            return True
+
+        self.button_register.configure(state='disabled')
+        self.label_password_mismatch.pack()
+        return False
