@@ -44,6 +44,16 @@ class Menu(CTkFrame):
                                              command=lambda: self.menu_func(ViewType.SHARED_FILES))
         self.shared_files_label = CTkLabel(self.shared_files_frame, text="Shared Files")
 
+        # Add the frame to hold shared_files button and label underneath
+        self.trashed_files_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
+
+        self.trashed_files_button = CTkButton(self.trashed_files_frame, text="",
+                                             image=CTkImage(Image.open("./assets/trash.webp"), size=(50, 50)),
+                                             width=100, height=100,
+                                             command=lambda: self.menu_func(ViewType.TRASHED_FILES))
+        self.trashed_files_label = CTkLabel(self.trashed_files_frame, text="Trash")
+
+
         # Add the frame to hold logout button and label underneath
         self.logout_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
@@ -65,6 +75,10 @@ class Menu(CTkFrame):
         self.shared_files_button.pack()
         self.shared_files_label.pack()
         self.shared_files_frame.pack(side="left", padx=25)
+
+        self.trashed_files_button.pack()
+        self.trashed_files_label.pack()
+        self.trashed_files_frame.pack(side="left", padx=25)
 
         self.logout_button.pack()
         self.logout_label.pack()
