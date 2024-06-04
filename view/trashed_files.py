@@ -98,6 +98,5 @@ class TrashedFiles(CTkFrame):
                 break
 
         self.filename.configure(text=f"Filename: {file['filename']}")
-        self.owner.configure(text=f"Owner: {file['owner']}")
         self.sizelabel.configure(text=f"Size: {format_file_size(file['file_size'])}")
 
