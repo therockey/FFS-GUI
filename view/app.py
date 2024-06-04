@@ -7,9 +7,7 @@ from SlickCTk.slick_context_menu import SlickContextMenu
 
 class App(CTk):
     def __init__(self, home_button_func: callable):
-        super().__init__()
-
-        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        super().__init__(fg_color=preferences["BACKGROUND_COLOR"])
 
         self.current_ui = []
 
@@ -21,29 +19,6 @@ class App(CTk):
         self.pref_window = None
         self.about_window = None
         self.home_btn = None
-
-        menu_options = {
-            "Preferences": self.open_settings,
-            "About": self.open_about,
-            "Quit": self.quit,
-        }
-
-        self.menu = SlickContextMenu(self, menu_options)
-
-    def quit(self) -> None:
-        self.destroy()
-
-    def open_settings(self):
-        if self.pref_window is None or not self.pref_window.winfo_exists():
-            self.pref_window = Preferences(self)
-        else:
-            self.pref_window.focus()
-
-    def open_about(self):
-        if self.about_window is None or not self.about_window.winfo_exists():
-            self.about_window = About(self)
-        else:
-            self.about_window.focus()
 
     def home_button(self, switch: bool):
         if switch:

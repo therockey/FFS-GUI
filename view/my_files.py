@@ -1,6 +1,7 @@
 from PIL import Image
 from customtkinter import *
 from CTkListbox import *
+from prefs import preferences
 
 
 class MyFiles(CTkFrame):
@@ -11,7 +12,9 @@ class MyFiles(CTkFrame):
                  make_private: callable,
                  delete_file: callable):
 
-        super().__init__(master=master, width=650, height=300)
+        super().__init__(master=master,
+                         width=650, height=300,
+                         fg_color=preferences["BACKGROUND_COLOR"])
 
         self.get_files = get_files
         self.files = []
@@ -25,7 +28,8 @@ class MyFiles(CTkFrame):
 
     def create_widgets(self):
 
-        self.btn_frame = CTkFrame(self)
+        self.btn_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
+
         # Create the buttons
         self.download_button = CTkButton(self.btn_frame, text="Download",
                                          image=CTkImage(Image.open("./assets/upload.webp").rotate(180)),
@@ -48,7 +52,7 @@ class MyFiles(CTkFrame):
 
         self.btn_frame.pack(side="left", fill="y", pady=100)
 
-        self.file_list = CTkListbox(self, multiple_selection=False)
+        self.file_list = CTkListbox(self, multiple_selection=False,)
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
     def display_files(self):

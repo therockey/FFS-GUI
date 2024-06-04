@@ -5,9 +5,12 @@ from viewlist import ViewType
 
 
 class Menu(CTkFrame):
-    def __init__(self, master, menu_func: callable, logout_func: callable):
-        super().__init__(master=master)
-        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+    def __init__(self, master,
+                 menu_func: callable,
+                 logout_func: callable):
+
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
+
         self.menu_func = menu_func
         self.logout_func = logout_func
         self.create_widgets()

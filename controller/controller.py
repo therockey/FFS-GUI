@@ -21,7 +21,7 @@ class Controller:
         if not auth.check_connection():
             PopupWindow(self.app,
                         "Server not reachable. Please try again later.", "Error",
-                        lambda: self.app.quit())
+                        lambda: self.app.destroy())
         self.app.mainloop()
 
     def change_view(self, view: ViewType):

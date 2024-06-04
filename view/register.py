@@ -3,9 +3,12 @@ from prefs import preferences
 
 
 class Register(CTkFrame):
-    def __init__(self, master, register_func: callable, login_view_func: callable):
-        super().__init__(master=master)
-        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+    def __init__(self, master,
+                 register_func: callable,
+                 login_view_func: callable):
+
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
+
         self.register_func = register_func
         self.login_view_func = login_view_func
         self.create_widgets()

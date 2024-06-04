@@ -3,9 +3,13 @@ from prefs import preferences
 
 
 class Login(CTkFrame):
-    def __init__(self, master, login_func: callable, register_view_func: callable, guest_func: callable):
-        super().__init__(master=master)
-        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+    def __init__(self, master,
+                 login_func: callable,
+                 register_view_func: callable,
+                 guest_func: callable):
+
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
+
         self.login_func = login_func
         self.register_view_func = register_view_func
         self.guest_func = guest_func

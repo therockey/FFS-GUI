@@ -9,8 +9,9 @@ from misc import format_file_size
 
 class Upload(CTkFrame):
     def __init__(self, master, upload_func: callable):
-        super().__init__(master=master)
-        self.configure(fg_color=preferences["BACKGROUND_COLOR"])
+
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
+
         self.file_path = None
         self.upload_func = upload_func
         self.create_widgets()

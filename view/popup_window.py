@@ -4,7 +4,9 @@ from prefs import preferences
 
 class PopupWindow(CTkToplevel):
     def __init__(self, master, message="EMPTY", header="Error", additional_func=None):
-        super().__init__(master=master)
+
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
+
         self.geometry("300x100")
         self.title(header)
         self.iconbitmap(preferences["ICON_PATH"])
