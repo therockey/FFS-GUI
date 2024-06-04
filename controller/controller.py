@@ -116,7 +116,7 @@ class Controller:
 
         url = upload_file(file_path, var, self.session)
 
-        post_upload = PostUpload(self.app, url)
+        post_upload = PostUpload(self.app, url, self.curr_view.clear_selection)
         post_upload.focus()
         post_upload.grab_set()
 

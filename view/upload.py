@@ -60,6 +60,14 @@ class Upload(CTkFrame):
         self.size_label.configure(text=f"Size: {round(os.path.getsize(file_path) / 1024 / 1024, 2)} MB")
         self.upload_file_button.configure(state="normal")
 
+    def clear_selection(self):
+        self.file_path = None
+        self.file_label.configure(text="No file selected")
+        self.file_icon.configure(image=None)
+        self.size_label.configure(text="")
+        self.upload_file_button.configure(state="disabled")
+        self.progress.set(0)
+
     def upload_file(self):
         threading.Thread(target=self.upload_func, args=(self.file_path, self.progress)).start()
 
@@ -68,10 +76,11 @@ class Upload(CTkFrame):
 
 
 class PostUpload(CTkToplevel):
-    def __init__(self, master, url):
+    def __init__(self, master, url, close_func: callable):
         super().__init__(master=master)
         self.title("Upload successful!")
         self.geometry("600x350")
+        self.close_func = close_func
         self.create_widgets(url)
 
     def create_widgets(self, url):
@@ -107,3 +116,8 @@ class PostUpload(CTkToplevel):
         self.clipboard_clear()
         self.clipboard_append(self.url_label.cget("text"))
         self.update()
+
+    def destroy(self):
+        self.close_func()
+        super().destroy()
+
