@@ -72,7 +72,8 @@ class Upload(CTkFrame):
         threading.Thread(target=self.upload_func, args=(self.file_path, self.progress)).start()
 
     def update_progress_string(self, *args):
-        self.progress_string.set(f"{round(self.progress.get() * 100)}%")
+        percentage = round(self.progress.get() * 100) if self.progress.get() < 1 else 100
+        self.progress_string.set(f"{percentage}%")
 
 
 class PostUpload(CTkToplevel):
