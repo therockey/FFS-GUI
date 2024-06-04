@@ -71,7 +71,7 @@ class Controller:
                                          self.download,
                                          self.share,
                                          self.private,
-                                         self.delete)
+                                         self.trash)
                 self.app.home_button(True)
 
                 default_layout = False
@@ -86,6 +86,13 @@ class Controller:
 
                 default_layout = False
                 self.curr_view.pack(side="right", fill="both", expand=True)
+
+            case ViewType.TRASHED_FILES:
+                self.app.geometry("800x450")
+                self.curr_view = TrashedFiles(self.app,
+                                              lambda: auth.get_trashed_file_list(self.session),
+                                              self.delete_permanently,
+                                              self.restore)
 
         # If the view has a default layout, apply a grid layout to it
         if default_layout:
@@ -151,14 +158,16 @@ class Controller:
         else:
             PopupWindow(self.app, content, "Error")
 
-    def delete(self, file_token: str):
+    def trash(self, file_token: str):
         if self.check_expiration():
             return
 
-        response_msg = delete_file(file_token, self.session)
+        status, response_msg = trash_file(file_token, self.session)
+
+        header = "Info" if status else "Error"
 
         # Open a popup window with the response
-        PopupWindow(self.app, response_msg, "Info")
+        PopupWindow(self.app, response_msg, header)
 
     def download(self, file_token: str):
         # Open the download link in the default web browser, which will then handle the download
@@ -180,6 +189,28 @@ class Controller:
             return
 
         status, response_msg = private_file(file_token, self.session)
+
+        header = "Info" if status else "Error"
+
+        # Open a popup window with the response
+        PopupWindow(self.app, response_msg, header)
+
+    def delete_permanently(self, file_token: str):
+        if self.check_expiration():
+            return
+
+        status, response_msg = delete_file(file_token, self.session)
+
+        header = "Info" if status else "Error"
+
+        # Open a popup window with the response
+        PopupWindow(self.app, response_msg, header)
+
+    def restore(self, file_token: str):
+        if self.check_expiration():
+            return
+
+        status, response_msg = restore_file(file_token, self.session)
 
         header = "Info" if status else "Error"
 

@@ -52,6 +52,12 @@ def get_shared_file_list(session: Session) -> list[dict]:
     return response.json()['files']
 
 
+def get_trashed_file_list(session: Session) -> list[dict]:
+    response = session.get(f"{preferences['API_URL']}/file/bin")
+
+    return response.json()['files']
+
+
 def check_connection():
     try:
         response = requests.get(preferences['API_URL'])

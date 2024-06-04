@@ -11,7 +11,7 @@ class MyFiles(CTkFrame):
                  download_file: callable,
                  share_file: callable,
                  make_private: callable,
-                 delete_file: callable):
+                 trash_file: callable):
 
         super().__init__(master=master,
                          width=650, height=300,
@@ -24,7 +24,7 @@ class MyFiles(CTkFrame):
         self.download_file = download_file
         self.share_file = share_file
         self.make_private = make_private
-        self.delete_file = delete_file
+        self.trash_file = trash_file
 
         self.create_widgets()
         self.display_files()
@@ -46,9 +46,9 @@ class MyFiles(CTkFrame):
         self.private_button = CTkButton(self.btn_frame, text="Make Private",
                                         command=self.private)
 
-        self.delete_button = CTkButton(self.btn_frame, text="Delete",
-                                       image=CTkImage(Image.open("./assets/delete.webp")),
-                                       command=self.delete)
+        self.trash_button = CTkButton(self.btn_frame, text="Trash",
+                                      image=CTkImage(Image.open("./assets/trash.webp")),
+                                      command=self.trash)
 
         # Create the file list
         self.file_list = CTkListbox(self, multiple_selection=False, )
@@ -57,7 +57,7 @@ class MyFiles(CTkFrame):
         self.download_button.grid(row=0, column=0, padx=10, pady=10)
         self.private_button.grid(row=2, column=0, padx=10, pady=10)
         self.share_button.grid(row=1, column=0, padx=10, pady=10)
-        self.delete_button.grid(row=3, column=0, padx=10, pady=10)
+        self.trash_button.grid(row=3, column=0, padx=10, pady=10)
         self.btn_frame.pack(side="left", fill="y", pady=100)
         self.file_list.pack(side="right", fill="both", expand=True, padx=10, pady=10)
 
@@ -100,10 +100,10 @@ class MyFiles(CTkFrame):
         if file_token:
             self.make_private(file_token)
 
-    def delete(self):
+    def trash(self):
         file_token = self.get_selected_file()
         if file_token:
-            self.delete_file(file_token)
+            self.trash_file(file_token)
             self.display_files()
 
 
