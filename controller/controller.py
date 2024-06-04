@@ -129,11 +129,14 @@ class Controller:
             PopupWindow(self.app, "Password cannot be empty", "Error")
             return
 
-        url = upload_file(file_path, var, self.session, password)
+        status, content = upload_file(file_path, var, self.session, password)
 
-        post_upload = PostUpload(self.app, url, self.curr_view.clear_selection)
-        post_upload.focus()
-        post_upload.grab_set()
+        if status:
+            post_upload = PostUpload(self.app, content, self.curr_view.clear_selection)
+            post_upload.focus()
+            post_upload.grab_set()
+        else:
+            PopupWindow(self.app, content, "Error")
 
     def delete(self, file_token: str):
         if self.check_expiration():
@@ -150,10 +153,13 @@ class Controller:
         if self.check_expiration():
             return
 
-        response_msg = share_file(file_token, user, self.session)
+        status, response_msg = share_file(file_token, user, self.session)
+
+        header = "Info" if status else "Error"
 
         # Open a popup window with the response
-        PopupWindow(self.app, response_msg, "Info")
+        PopupWindow(self.app, response_msg, header)
+
 
     def private(self, file_token: str):
         if self.check_expiration():

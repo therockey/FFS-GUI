@@ -4,7 +4,7 @@ from requests_toolbelt import MultipartEncoder, MultipartEncoderMonitor
 import os
 
 
-def upload_file(file_path, var, session: Session, password: str | None) -> str | None:
+def upload_file(file_path, var, session: Session, password: str | None) -> (bool, (str | None)):
     # Check if file exists
     if not os.path.isfile(file_path):
         return None
@@ -31,7 +31,11 @@ def upload_file(file_path, var, session: Session, password: str | None) -> str |
                                          'filename': filename,
                                          'filesize': str(file_size),
                                          'password': password})
-        return preferences["API_URL"] + response.json()['url']
+
+        if response.status_code == 200:
+            return True, preferences["API_URL"] + response.json()['url']
+
+        return False, response.json()['error']
 
 
 def delete_file(file_token, session: Session) -> str | None:
@@ -40,10 +44,13 @@ def delete_file(file_token, session: Session) -> str | None:
     return response.json()['message']
 
 
-def share_file(file_token, user, session: Session) -> str | None:
+def share_file(file_token, user, session: Session) -> (bool, (str | None)):
     response = session.post(f'{preferences["API_URL"]}/share/{file_token}/{user}/')
 
-    return response.json()['message']
+    if response.status_code == 200:
+        return True, response.json()['message']
+
+    return False, response.json()['error']
 
 
 def private_file(file_token, session: Session) -> str | None:

@@ -16,8 +16,7 @@ class Menu(CTkFrame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.upload_frame = CTkFrame(self)
-        self.upload_frame.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.upload_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
         self.upload_button = CTkButton(self.upload_frame, text="",
                                        image=CTkImage(Image.open("./assets/upload.webp"), size=(50, 50)),
@@ -29,8 +28,7 @@ class Menu(CTkFrame):
         self.upload_label.pack()
         self.upload_frame.pack(side="left", padx=25)
 
-        self.my_files_frame = CTkFrame(self)
-        self.my_files_frame.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.my_files_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
         self.my_files_button = CTkButton(self.my_files_frame, text="",
                                          image=CTkImage(Image.open("./assets/my_files.webp"), size=(50, 50)),
@@ -42,8 +40,7 @@ class Menu(CTkFrame):
         self.my_files_label.pack()
         self.my_files_frame.pack(side="left", padx=25)
 
-        self.shared_files_frame = CTkFrame(self)
-        self.shared_files_frame.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.shared_files_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
         self.shared_files_button = CTkButton(self.shared_files_frame, text="",
                                              image=CTkImage(Image.open("./assets/shared_files.webp"), size=(50, 50)),
@@ -55,8 +52,7 @@ class Menu(CTkFrame):
         self.shared_files_label.pack()
         self.shared_files_frame.pack(side="left", padx=25)
 
-        self.logout_frame = CTkFrame(self)
-        self.logout_frame.configure(fg_color=preferences["BACKGROUND_COLOR"])
+        self.logout_frame = CTkFrame(self, fg_color=preferences["BACKGROUND_COLOR"])
 
         self.logout_button = CTkButton(self.logout_frame, text="",
                                        image=CTkImage(Image.open("./assets/logout.webp"), size=(50, 50)),
