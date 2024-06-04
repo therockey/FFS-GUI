@@ -2,7 +2,6 @@ from customtkinter import *
 from view import *
 from PIL import Image
 from prefs import preferences
-from SlickCTk.slick_context_menu import SlickContextMenu
 
 
 class App(CTk):
