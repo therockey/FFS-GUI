@@ -92,19 +92,21 @@ class MyFiles(CTkFrame):
 class ShareDialog(CTkToplevel):
     def __init__(self, master, share_func: callable, file_token: str):
         super().__init__(master=master)
+        self.title("Share")
+        self.geometry("300x130")
         self.share_func = share_func
         self.file_token = file_token
         self.create_widgets()
 
     def create_widgets(self):
         self.label = CTkLabel(self, text="Share with (enter username):")
-        self.label.pack()
+        self.label.pack(pady=10)
 
         self.entry = CTkEntry(self)
         self.entry.pack()
 
         self.share_button = CTkButton(self, text="Share", command=self.share)
-        self.share_button.pack()
+        self.share_button.pack(pady=5)
 
     def share(self):
         username = self.entry.get()

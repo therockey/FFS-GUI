@@ -37,8 +37,6 @@ def register(username: str, password: str) -> (bool, str):
 def get_file_list(session: Session) -> list:
     response = session.get(f"{preferences['API_URL']}/user_filenames/")
 
-    print(response.json())
-
     return response.json()['files']
 
 
