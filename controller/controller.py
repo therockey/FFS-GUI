@@ -226,6 +226,9 @@ class Controller:
         Method for checking if the session has expired.
         :return:
         """
+        if self.session is None:
+            return False
+
         if datetime.datetime.utcnow() < self.session_expiry:
             return False
 
