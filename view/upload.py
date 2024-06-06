@@ -131,7 +131,7 @@ class Upload(CTkFrame):
 
 class PostUpload(CTkToplevel):
     def __init__(self, master, url, close_func: callable):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
 
         # Set the window properties
         self.title("Upload successful!")

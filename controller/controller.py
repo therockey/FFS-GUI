@@ -175,7 +175,7 @@ class Controller:
 
     def download(self, file_token: str):
         # Open the download link in the default web browser, which will then handle the download
-        webbrowser.open(f"{preferences['API_URL']}/download/{file_token}")
+        webbrowser.open(f"{preferences['API_URL']}/file/{file_token}")
 
     def share(self, file_token: str, user: str):
         if self.check_expiration():
