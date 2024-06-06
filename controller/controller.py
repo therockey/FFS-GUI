@@ -49,25 +49,25 @@ class Controller:
                                        lambda e: self.change_view(ViewType.REGISTER),
                                        self.guest)
                 self.app.home_button(False)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
             case ViewType.REGISTER:
                 self.app.geometry("450x500")
                 self.curr_view = Register(self.app, self.register, lambda e: self.change_view(ViewType.LOGIN))
                 self.app.home_button(False)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
             case ViewType.MENU:
                 self.app.geometry("900x450")
                 self.curr_view = Menu(self.app, self.change_view, self.logout)
                 self.app.home_button(False)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
             case ViewType.UPLOAD:
                 self.app.geometry("400x400")
                 self.curr_view = Upload(self.app, self.upload)
                 self.app.home_button(True)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
             case ViewType.FILE_LIST:
                 self.app.geometry("800x450")
@@ -78,7 +78,7 @@ class Controller:
                                          self.private,
                                          self.trash)
                 self.app.home_button(True)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
                 default_layout = False
                 self.curr_view.pack(side="right", fill="both", expand=True)
@@ -89,7 +89,7 @@ class Controller:
                                              lambda: auth.get_shared_file_list(self.session),
                                              self.download)
                 self.app.home_button(True)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
                 default_layout = False
                 self.curr_view.pack(side="right", fill="both", expand=True)
@@ -101,7 +101,7 @@ class Controller:
                                               self.delete_permanently,
                                               self.restore)
                 self.app.home_button(True)
-                self.app.login_btn(False)
+                self.app.login_button(False)
 
                 default_layout = False
                 self.curr_view.pack(side="right", fill="both", expand=True)
@@ -152,7 +152,7 @@ class Controller:
     def guest(self):
         self.change_view(ViewType.UPLOAD)
         self.app.home_button(False)
-        self.app.login_btn(True)
+        self.app.login_button(True)
 
     def upload(self, file_path: str, var: DoubleVar, password: str | None):
         if self.check_expiration():
