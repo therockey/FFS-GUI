@@ -109,7 +109,7 @@ class MyFiles(CTkFrame):
 
 class ShareDialog(CTkToplevel):
     def __init__(self, master, share_func: callable, file_token: str):
-        super().__init__(master=master)
+        super().__init__(master=master, fg_color=preferences["BACKGROUND_COLOR"])
 
         # Set the window properties
         self.title("Share")
