@@ -5,7 +5,10 @@ from prefs import preferences
 
 
 class App(CTk):
-    def __init__(self, home_button_func: callable):
+    def __init__(self,
+                 home_button_func: callable,
+                 login_button_func: callable):
+
         super().__init__(fg_color=preferences["BACKGROUND_COLOR"])
 
         self.current_ui = []
@@ -17,10 +20,12 @@ class App(CTk):
 
         # Add the passed through functions for later use
         self.home_btn_func = home_button_func
+        self.login_btn_func = login_button_func
 
         self.pref_window = None
         self.about_window = None
         self.home_btn = None
+        self.login_btn = None
 
     def home_button(self, switch: bool):
         """
@@ -39,3 +44,21 @@ class App(CTk):
             if self.home_btn is not None:
                 self.home_btn.destroy()
                 self.home_btn = None
+
+    def login_button(self, switch: bool):
+        """
+        Add or remove the login button
+        :param switch: boolean switch, which toggles the login button
+        :return:
+        """
+        if switch:
+            self.login_btn = CTkButton(self, text="",
+                                      image=CTkImage(Image.open("./assets/login.webp"),
+                                                     size=(25, 25)),
+                                      width=50, height=50,
+                                      command=self.login_btn_func)
+            self.login_btn.place(x=10, y=10, anchor=NW)
+        else:
+            if self.login_btn is not None:
+                self.login_btn.destroy()
+                self.login_btn = None
